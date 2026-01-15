@@ -1,0 +1,264 @@
+/* Estilos globales */
+body {
+    background: linear-gradient(135deg, #0f1729 0%, #1a2847 50%, #0d1420 100%);
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+}
+
+/* Tarjetas personalizadas */
+.card-custom {
+    background: linear-gradient(135deg, rgba(18, 26, 42, 0.95) 0%, rgba(30, 40, 60, 0.95) 100%);
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #00d4ff, #0099ff) 1;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 212, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card-custom:hover {
+    box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+/* Texto mutado */
+.muted {
+    color: #8fa3c0;
+    font-size: 0.9rem;
+}
+
+/* Enlaces */
+a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #00d4ff;
+}
+
+/* Encabezados */
+h2 {
+    background: linear-gradient(135deg, #00d4ff, #0099ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+h5 {
+    background: linear-gradient(135deg, #00d4ff, #0099ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+}
+
+/* Botones */
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0099ff, #00d4ff);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0080dd, #00b3dd);
+    box-shadow: 0 8px 25px rgba(0, 153, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #00d084, #00f5a0);
+    color: #fff;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #00b870, #00dd88);
+    box-shadow: 0 8px 25px rgba(0, 208, 132, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffa500, #ffb700);
+    color: #fff;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #ff9000, #ffa200);
+    box-shadow: 0 8px 25px rgba(255, 165, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-outline-success {
+    border: 2px solid #00d084;
+    color: #00d084;
+}
+
+.btn-outline-success:hover {
+    background: linear-gradient(135deg, #00d084, #00f5a0);
+    color: #fff;
+    box-shadow: 0 8px 25px rgba(0, 208, 132, 0.3);
+}
+
+.btn-outline-light {
+    border: 2px solid #8fa3c0;
+    color: #8fa3c0;
+}
+
+.btn-outline-light:hover {
+    background: linear-gradient(135deg, #00d4ff, #0099ff);
+    border-color: #00d4ff;
+    color: #fff;
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+}
+
+/* Formularios */
+.form-control {
+    background: rgba(30, 40, 60, 0.7);
+    border: 2px solid #22304a;
+    border-radius: 10px;
+    color: #fff;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    background: rgba(30, 40, 60, 0.9);
+    border-color: #00d4ff;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    color: #fff;
+}
+
+.form-label {
+    color: #00d4ff;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Select */
+select.form-control {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2300d4ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 12px;
+    appearance: none;
+    padding-right: 40px;
+}
+
+/* Alertas */
+.alert {
+    border-radius: 12px;
+    border: none;
+    font-weight: 500;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.2), rgba(255, 102, 109, 0.2));
+    border-left: 4px solid #ff4757;
+    color: #ff9eaa;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, rgba(0, 208, 132, 0.2), rgba(0, 245, 160, 0.2));
+    border-left: 4px solid #00d084;
+    color: #00f5a0;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, rgba(0, 153, 255, 0.2), rgba(0, 212, 255, 0.2));
+    border-left: 4px solid #0099ff;
+    color: #66d9ff;
+}
+
+/* Lista de elementos */
+.list-group-item {
+    background: rgba(30, 40, 60, 0.6);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    color: #fff;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    background: rgba(30, 40, 60, 0.8);
+    border-color: #00d4ff;
+    box-shadow: 0 5px 20px rgba(0, 212, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.list-group {
+    gap: 8px;
+}
+
+/* Radio buttons y checkboxes */
+.form-check-input {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #00d4ff;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-check-input:checked {
+    background: linear-gradient(135deg, #00d4ff, #0099ff);
+    border-color: #00d4ff;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+}
+
+.form-check-label {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+/* Modal */
+.modal-content {
+    background: linear-gradient(135deg, rgba(18, 26, 42, 0.98) 0%, rgba(30, 40, 60, 0.98) 100%);
+    border: 2px solid rgba(0, 212, 255, 0.3);
+}
+
+.modal-header {
+    border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+}
+
+.modal-title {
+    background: linear-gradient(135deg, #00d4ff, #0099ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+.btn-close-white {
+    filter: brightness(0) invert(1);
+}
+
+/* Contenedores */
+.container {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Efecto de pulsado para botones */
+.btn:active {
+    transform: scale(0.98);
+}

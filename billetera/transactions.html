@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <!-- Metadatos y enlaces CSS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Movimientos</title>
+
+    <!-- Bootstrap y estilos personalizados -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Historial de transacciones -->
+    <div class="container py-5">
+        <div class="card-custom p-4">
+            <h2><i class="fas fa-receipt me-2"></i>Últimos Movimientos</h2>
+
+            <!-- Filtro por tipo de transacción -->
+            <div class="mt-4 mb-4">
+                <label class="form-label"><i class="fas fa-filter me-2"></i>Filtrar por tipo:</label>
+                <select id="filterType" class="form-control">
+                    <option value="">Todos los movimientos</option>
+                    <option value="Depósito">Depósitos</option>
+                    <option value="Envío">Envíos</option>
+                </select>
+            </div>
+
+            <!-- Lista de transacciones -->
+            <ul id="txList" class="list-group mt-3"></ul>
+
+            <!-- Mensaje cuando no hay transacciones -->
+            <p id="noTxMsg" class="text-center muted mt-4"></p>
+
+            <!-- Botón para volver -->
+            <a href="menu.html" class="btn btn-primary w-100 mt-3"><i class="fas fa-arrow-left me-2"></i>Volver al Menú Principal</a>
+        </div>
+    </div>
+
+    <script src="../js/transactions.js"></script>
+</body>
+
+</html>
