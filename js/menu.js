@@ -56,7 +56,6 @@ $(document).ready(function () {
   $("#btnDeposit").on("click", function () { goTo("deposit.html", "depositar"); });
   $("#btnWithdraw").on("click", function () { goTo("withdraw.html", "retirar"); });
   $("#btnSend").on("click", function () { goTo("sendmoney.html", "enviar dinero"); });
-  $("#btnReceive").on("click", function () { goTo("receive.html", "recibir dinero"); });
   $("#btnTx").on("click", function () { goTo("transactions.html", "ultimos movimientos"); });
 
   // Pequeño efecto al pasar el mouse por los botones

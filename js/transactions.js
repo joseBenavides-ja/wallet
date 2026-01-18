@@ -18,7 +18,6 @@ function getTipoTransaccion(tipo) {
     deposit: "Depósito",
     withdraw: "Retiro",
     send: "Transferencia enviada",
-    receive: "Transferencia recibida",
     purchase: "Compra"
   };
   return map[tipo] || tipo;
