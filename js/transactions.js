@@ -1,72 +1,85 @@
 /**
- * TRANSACTIONS.JS - Historial de movimientos
- * Muestra el listado de todas las transacciones realizadas
+ * TRANSACTIONS.JS - Historial de movimientos (con jQuery)
+ * - Lee transacciones desde LocalStorage (txs)
+ * - Filtra por tipo
  */
 
-// Si no está logueado, redirige al login (JS)
 if (localStorage.getItem("logged") !== "true") {
-    window.location.href = "login.html";
+  window.location.href = "login.html";
 }
 
-// Convierte números a formato de moneda (ej: $1.000) (JS)
 function money(n) {
-    return "$" + Number(n).toLocaleString("es-CL");
+  return "$" + Number(n).toLocaleString("es-CL");
 }
 
-// Obtiene el ícono según el tipo de transacción (JS)
+// Devuelve un tipo "legible" (sirve si algun dia guardas codigos en vez de texto)
+function getTipoTransaccion(tipo) {
+  var map = {
+    deposit: "Depósito",
+    withdraw: "Retiro",
+    send: "Transferencia enviada",
+    receive: "Transferencia recibida",
+    purchase: "Compra"
+  };
+  return map[tipo] || tipo;
+}
+
 function getIconoTransaccion(tipo) {
-    if (tipo === "Depósito") {
-        return '<i class="fas fa-arrow-down text-success me-2"></i>';
-    } else if (tipo === "Envío") {
-        return '<i class="fas fa-arrow-right text-warning me-2"></i>';
-    }
-    return '<i class="fas fa-exchange-alt me-2"></i>';
+  var t = getTipoTransaccion(tipo);
+  if (t === "Depósito") return '<i class="fas fa-arrow-down text-success me-2"></i>';
+  if (t === "Retiro") return '<i class="fas fa-arrow-up text-warning me-2"></i>';
+  if (t === "Transferencia enviada") return '<i class="fas fa-paper-plane text-primary me-2"></i>';
+  if (t === "Transferencia recibida") return '<i class="fas fa-download text-success me-2"></i>';
+  if (t === "Compra") return '<i class="fas fa-shopping-cart text-info me-2"></i>';
+  return '<i class="fas fa-exchange-alt me-2"></i>';
 }
 
-// Muestra los últimos movimientos según el filtro (jQuery)
 function mostrarUltimosMovimientos(filtro) {
-    var $list = $("#txList");
-    var $noMsg = $("#noTxMsg");
-    var txs = JSON.parse(localStorage.getItem("txs") || "[]");
+  var $list = $("#txList");
+  var $noMsg = $("#noTxMsg");
 
-    $list.empty();
-    $noMsg.empty();
+  var txs = JSON.parse(localStorage.getItem("txs") || "[]");
 
-    // Filtrar transacciones según el tipo seleccionado (JS)
-    var txsFiltradas = txs;
-    if (filtro !== "") {
-        txsFiltradas = txs.filter(function(tx) {
-            return tx.type === filtro;
-        });
-    }
+  $list.empty();
+  $noMsg.empty();
 
-    if (txsFiltradas.length === 0) {
-        // Si no hay transacciones, mostrar mensaje (jQuery)
-        $noMsg.html('<i class="fas fa-inbox me-1"></i>No hay movimientos de este tipo');
-    } else {
-        // Mostrar las últimas 15 transacciones (jQuery)
-        for (var i = 0; i < Math.min(15, txsFiltradas.length); i++) {
-            var t = txsFiltradas[i];
-            var $li = $('<li class="list-group-item"></li>');
-            $li.html(
-                getIconoTransaccion(t.type) +
-                "<b>" + t.type + "</b> - " + money(t.amount) + "<br>" +
-                '<span class="text-muted" style="font-size: 0.9rem;">' + t.detail + "<br>" +
-                "<i class='fas fa-clock me-1'></i>" + t.date + '</span>'
-            );
-            $list.append($li);
-        }
-    }
+  var txsFiltradas = txs;
+  if (filtro && filtro !== "") {
+    txsFiltradas = txs.filter(function (tx) {
+      return getTipoTransaccion(tx.type) === filtro;
+    });
+  }
+
+  if (txsFiltradas.length === 0) {
+    $noMsg.html('<i class="fas fa-inbox me-1"></i>No hay movimientos para mostrar');
+    return;
+  }
+
+  for (var i = 0; i < Math.min(15, txsFiltradas.length); i++) {
+    var tx = txsFiltradas[i];
+    var tipo = getTipoTransaccion(tx.type);
+
+    var $li = $('<li class="list-group-item"></li>');
+    $li.html(
+      getIconoTransaccion(tx.type) +
+      '<b>' + tipo + '</b> - ' + money(tx.amount) + '<br>' +
+      '<span class="text-white-50" style="font-size: 0.9rem;">' +
+        tx.detail + '<br>' +
+        "<i class='fas fa-clock me-1'></i>" + tx.date +
+      '</span>'
+    );
+
+    $list.append($li);
+  }
 }
 
-// Espera a que el documento esté listo (jQuery)
-$(document).ready(function() {
-    // Mostrar todas las transacciones al cargar (jQuery)
-    mostrarUltimosMovimientos("");
+$(document).ready(function () {
+  // Animacion simple
+  $(".card-custom").hide().fadeIn(450);
 
-    // Cambiar filtro cuando se selecciona un tipo (jQuery)
-    $("#filterType").on("change", function () {
-        var filtro = $(this).val();
-        mostrarUltimosMovimientos(filtro);
-    });
+  mostrarUltimosMovimientos("");
+
+  $("#filterType").on("change", function () {
+    mostrarUltimosMovimientos($(this).val());
+  });
 });

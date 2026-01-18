@@ -1,8 +1,6 @@
 /**
- * SENDMONEY.JS - Envio de dinero (con jQuery)
- * - Buscar contactos con autocompletar simple
- * - Agregar nuevo contacto en modal (Bootstrap)
- * - Enviar dinero: valida monto, contacto y saldo
+ * RECEIVE.JS - Simular recepcion de fondos
+ * Selecciona un contacto (remitente), ingresa un monto y suma al saldo.
  */
 
 if (localStorage.getItem("logged") !== "true") {
@@ -29,13 +27,9 @@ function getContacts() {
   if (contacts.length === 0) {
     contacts = [{
       name: "Marco Silva",
-      rut: "12345678-9",
-      email: "marco@demo.com",
-      bank: "Banco Demo",
-      accountType: "Corriente",
-      accountNumber: "123456789",
       cbu: "1234567890123456789012",
-      alias: "MARCO.SILVA"
+      alias: "MARCO.SILVA",
+      bank: "Banco Demo"
     }];
     localStorage.setItem("contacts", JSON.stringify(contacts));
   }
@@ -51,7 +45,6 @@ function renderContacts(filterText) {
   var contacts = getContacts();
   var $list = $("#contactsList");
   var $noMsg = $("#noContactsMsg");
-
   $list.empty();
   $noMsg.empty();
 
@@ -79,9 +72,9 @@ function renderContacts(filterText) {
       return cc.cbu === c.cbu && cc.alias === c.alias;
     });
 
-    var $li = $('<li class="list-group-item d-flex justify-content-between align-items-start"></li>');
+    var $li = $('<li class="list-group-item"></li>');
     $li.html(
-      '<div class="form-check flex-grow-1">' +
+      '<div class="form-check">' +
         '<input class="form-check-input" type="radio" name="contactRadio" id="c' + indexOriginal + '" value="' + indexOriginal + '">' +
         '<label class="form-check-label" for="c' + indexOriginal + '">' +
           '<i class="fas fa-user-circle me-2"></i><b>' + c.name + '</b><br>' +
@@ -91,10 +84,7 @@ function renderContacts(filterText) {
             '<i class="fas fa-credit-card me-1"></i>Tipo: ' + c.accountType + ' | <i class="fas fa-hashtag me-1"></i>Nº Cuenta: ' + c.accountNumber +
           '</span>' +
         '</label>' +
-      '</div>' +
-      '<button class="btn btn-sm btn-danger ms-2 deleteContactBtn" data-index="' + indexOriginal + '" type="button">' +
-        '<i class="fas fa-trash me-1"></i>Eliminar' +
-      '</button>'
+      '</div>'
     );
     $list.append($li);
   }
@@ -111,11 +101,9 @@ function renderSuggestions(text) {
 
   var q = text.toLowerCase();
   var contacts = getContacts();
-  var matches = contacts
-    .filter(function (c) {
-      return c.name.toLowerCase().includes(q) || c.alias.toLowerCase().includes(q);
-    })
-    .slice(0, 5);
+  var matches = contacts.filter(function (c) {
+    return c.name.toLowerCase().includes(q) || c.alias.toLowerCase().includes(q);
+  }).slice(0, 5);
 
   if (matches.length === 0) {
     $sug.hide();
@@ -142,38 +130,23 @@ $(document).ready(function () {
 
   // Modal (Bootstrap)
   var $modal = $("#contactModal");
-  var modal = new bootstrap.Modal($modal[0], {});
+  var modal = new bootstrap.Modal($modal[0]);
 
   $("#openModalBtn").on("click", function () {
     $("#modalAlert").empty();
     modal.show();
   });
 
-  // Buscar + autocompletar simple
+  // Buscador + autocompletar simple
   $("#searchContact").on("keyup", function () {
     var q = $(this).val();
     renderContacts(q);
     renderSuggestions(q);
   });
 
-  // Mostrar boton "Enviar" solo si hay contacto seleccionado
+  // Mostrar boton solo si hay contacto seleccionado
   $(document).on("change", 'input[name="contactRadio"]', function () {
-    $("#btnSendMoney").removeClass("d-none");
-    $(".list-group-item").removeClass("contact-selected");
-    $(this).closest("li").addClass("contact-selected");
-  });
-
-  // Eliminar contacto
-  $(document).on("click", ".deleteContactBtn", function () {
-    var index = $(this).data("index");
-    var contacts = getContacts();
-    
-    if (confirm("¿Estás seguro de que deseas eliminar este contacto?")) {
-      contacts.splice(index, 1);
-      localStorage.setItem("contacts", JSON.stringify(contacts));
-      renderContacts($("#searchContact").val());
-      renderSuggestions($("#searchContact").val());
-    }
+    $("#btnReceive").removeClass("d-none");
   });
 
   // Guardar contacto
@@ -181,40 +154,41 @@ $(document).ready(function () {
     e.preventDefault();
 
     var name = $("#cName").val().trim();
-    var rut = $("#cRut").val().trim();
-    var email = $("#cEmail").val().trim();
+    var cbu = $("#cCbu").val().trim();
+    var alias = $("#cAlias").val().trim();
     var bank = $("#cBank").val().trim();
-    var accountType = $("#cAccountType").val().trim();
-    var accountNumber = $("#cAccountNumber").val().trim();
 
     var $modalAlert = $("#modalAlert");
     $modalAlert.empty();
 
-    if (!name || !rut || !email || !bank || !accountType || !accountNumber) {
+    if (!name || !cbu || !alias || !bank) {
       $modalAlert.html('<div class="alert alert-danger">Completa todos los campos.</div>');
+      return;
+    }
+
+    if (!/^\d{22}$/.test(cbu)) {
+      $modalAlert.html('<div class="alert alert-danger">El CBU debe tener 22 digitos numericos.</div>');
       return;
     }
 
     var contacts = getContacts();
 
     var yaExiste = contacts.some(function (c) {
-      return (c.rut && c.rut === rut) || (c.email && c.email.toLowerCase() === email.toLowerCase());
+      return c.cbu === cbu || c.alias.toLowerCase() === alias.toLowerCase();
     });
 
     if (yaExiste) {
-      $modalAlert.html('<div class="alert alert-danger">Ese RUT o correo ya existe.</div>');
+      $modalAlert.html('<div class="alert alert-danger">Ese CBU o Alias ya existe.</div>');
       return;
     }
 
-    contacts.push({ name: name, rut: rut, email: email, bank: bank, accountType: accountType, accountNumber: accountNumber, cbu: rut, alias: name });
+    contacts.push({ name: name, cbu: cbu, alias: alias, bank: bank });
     localStorage.setItem("contacts", JSON.stringify(contacts));
 
     $("#cName").val("");
-    $("#cRut").val("");
-    $("#cEmail").val("");
+    $("#cCbu").val("");
+    $("#cAlias").val("");
     $("#cBank").val("");
-    $("#cAccountType").val("");
-    $("#cAccountNumber").val("");
 
     $modalAlert.html('<div class="alert alert-success">Contacto guardado ✅</div>');
 
@@ -225,14 +199,14 @@ $(document).ready(function () {
     }, 600);
   });
 
-  // Enviar dinero
-  $("#sendForm").on("submit", function (e) {
+  // Confirmar recepcion
+  $("#receiveForm").on("submit", function (e) {
     e.preventDefault();
 
+    var amount = Number($("#receiveAmount").val());
     var $msg = $("#msg");
     $msg.empty();
 
-    var amount = Number($("#sendAmount").val());
     if (!amount || amount <= 0) {
       $msg.html('<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>Ingresa un monto valido</div>');
       return;
@@ -247,22 +221,17 @@ $(document).ready(function () {
     var contacts = getContacts();
     var contact = contacts[Number($selected.val())];
 
-    var balance = Number(localStorage.getItem("balance") || "0");
-    if (amount > balance) {
-      $msg.html('<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>Saldo insuficiente</div>');
-      return;
-    }
-
-    var newBalance = balance - amount;
+    var prevBalance = Number(localStorage.getItem("balance") || "0");
+    var newBalance = prevBalance + amount;
     localStorage.setItem("balance", String(newBalance));
 
-    addTx("Transferencia enviada", amount, "Enviado a " + contact.name + " (" + contact.alias + ")");
+    addTx("Transferencia recibida", amount, "Recibido de " + contact.name + " (" + contact.alias + ")");
 
     $msg.html(
       '<div class="alert alert-success">' +
-        '<h5><i class="fas fa-check-circle me-2"></i>Envio realizado</h5>' +
-        '<p class="mb-2"><strong>Beneficiario:</strong> ' + contact.name + '</p>' +
-        '<p class="mb-2"><strong>Monto enviado:</strong> ' + money(amount) + '</p>' +
+        '<h5><i class="fas fa-check-circle me-2"></i>Recepcion confirmada</h5>' +
+        '<p class="mb-2"><strong>Remitente:</strong> ' + contact.name + '</p>' +
+        '<p class="mb-2"><strong>Monto recibido:</strong> ' + money(amount) + '</p>' +
         '<p class="mb-0"><strong>Nuevo saldo:</strong> ' + money(newBalance) + '</p>' +
       '</div>' +
       '<div class="alert alert-info mt-3"><i class="fas fa-info-circle me-2"></i>Volviendo al menu en 2 segundos...</div>'

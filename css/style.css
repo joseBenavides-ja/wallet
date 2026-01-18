@@ -23,7 +23,7 @@ body {
 
 /* Texto mutado */
 .muted {
-    color: #8fa3c0;
+    color: rgba(255, 255, 255, 0.65);
     font-size: 0.9rem;
 }
 
@@ -261,4 +261,25 @@ select.form-control {
 /* Efecto de pulsado para botones */
 .btn:active {
     transform: scale(0.98);
+}
+/* Navbar */
+.navbar .nav-link {
+    color: #8fa3c0;
+    font-weight: 600;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    color: #00d4ff;
+}
+
+/* Contacto seleccionado */
+.contact-selected {
+    border-color: #00d4ff !important;
+    box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.25);
+}
+
+/* Autocomplete simple */
+#suggestions .list-group-item {
+    margin-bottom: 0;
 }
