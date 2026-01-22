@@ -17,5 +17,5 @@ Proyecto Frontend de una billetera digital básica con inicio de sesión, menú 
 - JavaScript + jQuery
 - LocalStorage (saldo, contactos y transacciones)
 
-## 📁 Estructura del proyecto (referencial)
-https://github.com/joseBenavides-ja/wallet
+## Fuente codigo
+- https://github.com/joseBenavides-ja/wallet
